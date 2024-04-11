@@ -1,0 +1,21 @@
+{
+  "name": "oxemis/oxibounce",
+  "description": "PHP wrapper for the OxiBounce API",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Oxemis\\OxiBounce\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "oxemis",
+      "email": "support@oxemis.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.8",
+    "ext-json": "*"
+  }
+}
