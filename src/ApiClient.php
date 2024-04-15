@@ -20,7 +20,7 @@ class ApiClient
 
         $this->auth = base64_encode($apiLogin . ":" . $apiPassword);
         $this->userAgent = Configuration::USER_AGENT . PHP_VERSION . '/' . Configuration::WRAPPER_VERSION;
-        $this->baseURL = "https://" . Configuration::MAIN_URL;
+        $this->baseURL = Configuration::MAIN_URL;
         $this->userAPI = new UserAPI($this);
         $this->checkAPI = new CheckAPI($this);
 

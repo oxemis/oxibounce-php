@@ -30,7 +30,7 @@ class EmailCheckResult extends EmailCheck
     /**
      * Get the result of the test. Can be RESULT_OK, RESULT_KO or RESULT_NOTSURE
      * The main test result (OK, KO, NOTSURE). For more details, see
-     * “ResultDetail”.
+     * “getReason”.
      * OK : The various tests performed by OxiBounce seem to indicate
      * that the address is valid and functional.
      * KO : The tests indicate that the address does not work (or no longer

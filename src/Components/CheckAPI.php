@@ -22,8 +22,8 @@ class CheckAPI extends Component
     /**
      * Allows you to run a check asynchronously.
      *
-     * @param string $email The email you want to check (you can set multiple emails by separating them with a ";")
-     * @return array<EmailCheck>         Check informations (please keep the ID in order to get results) - https://api.oxibounce.com/doc/#/check/post_check
+     * @param string $email             The email you want to check (you can set multiple emails by separating them with a ";")
+     * @return array<EmailCheck>        Check informations (please keep the ID in order to get results) - https://api.oxibounce.com/doc/#/check/post_check
      * @throws ApiException
      */
     public function runCheckAsync(string $email): array
@@ -39,7 +39,7 @@ class CheckAPI extends Component
     /**
      * Allows you to check the status and get the result of a test.
      *
-     * @param array<EmailCheck> $emailChecks The checks you want the result
+     * @param array<EmailCheck> $emailChecks        The checks you want the result
      * @return array<EmailCheckResult>              The status of the tests. See : https://api.oxibounce.com/doc/#/check/get_check
      * @throws ApiException
      */
@@ -55,7 +55,7 @@ class CheckAPI extends Component
     /**
      * Allows you to check the status and get the result of a test.
      *
-     * @param string $id The ID of the test (you can check multiple IDs by separating them with a ;)
+     * @param string $id                            The ID of the test (you can check multiple IDs by separating them with a ;)
      * @return array<EmailCheckResult>              The status of the test. See : https://api.oxibounce.com/doc/#/check/get_check
      * @throws ApiException
      */
@@ -79,9 +79,9 @@ class CheckAPI extends Component
      * Please note that if the timeout is reached you MAY have some tests with a "PENDING" status.
      * Some checks take time to complete because of the complexity of the tests.
      *
-     * @param string $emails The emails you want to test (you can set multiple emails by separating them with a ";")
-     * @param int $timeout The time allowed to check (in seconds). 0 means no timeout
-     * @return array<EmailCheckResult>          The result of the tests. See : https://api.oxibounce.com/doc/#/check/get_check
+     * @param string $emails                The emails you want to test (you can set multiple emails by separating them with a ";")
+     * @param int $timeout                  The time allowed to check (in seconds). 0 means no timeout
+     * @return array<EmailCheckResult>      The result of the tests. See : https://api.oxibounce.com/doc/#/check/get_check
      * @throws ApiException
      */
     public function checkEmails(string $emails, int $timeout = 0): array
