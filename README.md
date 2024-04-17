@@ -52,21 +52,22 @@ export OXIBOUNCE_API_PWD='your API password'
 Initialize your **OxiBounce** Client:
 
 ```php
-use \Oxemis\OxiBounce;
+require_once 'vendor/autoload.php';
+use \Oxemis\OxiBounce\OxiBounceClient;
 
 // getenv will allow us to get the OXIBOUNCE_API_LOGIN/OXIBOUNCE_API_PWD variables we created before:
 
 $apilogin = getenv('OXIBOUNCE_API_LOGIN');
 $apipwd = getenv('OXIBOUNCE_API_PWD');
 
-$oxibounce = new ApiClient($apilogin, $apipwd);
+$oxibounce = new OxiBounceClient($apilogin, $apipwd);
 
 // or, without using environment variables:
 
 $apilogin = 'your API login';
 $apipwd = 'your API password';
 
-$oxibounce = new ApiClient($apilogin, $apipwd);
+$oxibounce = new OxiBounceClient($apilogin, $apipwd);
 ```
 
 ## Getting information about your account
@@ -74,9 +75,10 @@ You will find all the information about your OxiBounce account with the "**UserA
 Informations returned are documented in the class.
 
 ```php
-require_once "./vendor/autoload.php";
+require_once "vendor/autoload.php";
+use \Oxemis\OxiBounce\OxiBounceClient;
 
-$client = new Oxemis\OxiBounce\ApiClient(API_LOGIN,API_PWD);
+$client = new OxiBounceClient(API_LOGIN,API_PWD);
 $user = $client->userAPI->getUser();
 
 echo "Account :" . $user->getEmail() . "\n" .
@@ -110,16 +112,15 @@ The async method will require you to :
 **Step 1 : run the test**
 
 ```php
-<?php
-require 'vendor/autoload.php';
-use Oxemis\OxiBounce\ApiClient;
+require_once 'vendor/autoload.php';
+use Oxemis\OxiBounce\OxiBounceClient;
 use Oxemis\OxiBounce\Objects\EmailCheck;
 use Oxemis\OxiBounce\Objects\EmailCheckResult;  
 
 // Create the Client
 $apilogin = 'your API login';
 $apipwd = 'your API password';
-$client = new ApiClient($apilogin, $apipwd);
+$client = new OxiBounceClient($apilogin, $apipwd);
 
 // Run the check
 // You can specify multiple addresses separated with a ";" (up to 50)
@@ -131,64 +132,64 @@ $tests = $client->checkAPI->runCheckAsync("email1@example.com");
 ```php
 // We'll have to check that all tests are carried out.
 // Remember that tests can take minutes !
-// Other option is to use the synchronous method, see next chapter !
+// Other option is to use the synchronous method (which handle a timeout), see next chapter !
 $pending = true;
 while ($pending) {
 
-    // Get the results
     // $tests is the array returned by runCheckAsync()
     $results = $client->checkAPI->getCheckResultAsync($tests);
     
     // Will be set to true below if some tests are still "PENDING"
     $pending = false;
     
-    // Use the results
+    // Wait for results
     foreach ($results as $result) {
-        if ($result->getStatus() == EmailCheckResult::STATUS_DONE) {
-            // The test is done, use object properties
-            switch ($result->getResult()) {
-                case EmailCheckResult::RESULT_OK:
-                    // The address is valid.
-                    echo $result->getEmail() . " is valid !";
-                    break;
-                case EmailCheckResult::RESULT_KO:
-                    // The address is invalid.
-                    echo $result->getEmail() . " is invalid !";
-                    break;
-                case EmailCheckResult::RESULT_NOTSURE:
-                    // The tests did not reveal whether the address is valid or not.
-                    // Other properties ($result->isRisky() for example) can give you more
-                    // information to let you decide whether or not to authorize the address.
-                    echo $result->getEmail() . " is not sure !";
-                    break;
-            }
-        } else {
+        if ($result->getStatus() == EmailCheck::STATUS_PENDING) 
             // Some tests are still pending
             $pending = true;
+            // Waiting for 1 second
+            sleep(1);
         }        
     }
     
-    // End of checks !
-    
-}
+} 
 
+// Use the results
+foreach ($results as $result) {
+    switch ($result->getResult()) {
+        case EmailCheckResult::RESULT_OK:
+            // The address is valid.
+            echo $result->getEmail() . " is valid !";
+            break;
+        case EmailCheckResult::RESULT_KO:
+            // The address is invalid.
+            echo $result->getEmail() . " is invalid !";
+            break;
+        case EmailCheckResult::RESULT_NOTSURE:
+            // The tests did not reveal whether the address is valid or not.
+            // Other properties ($result->isRisky() for example) can give you more
+            // information to let you decide whether or not to authorize the address.
+            echo $result->getEmail() . " is not sure !";
+            break;
+    }
+}
 ```
 
 ## Synchronous check
 The synchronous method manage a limit of time for the checks. 
 
 Here is a simple sample :
+
 ```php
-<?php
-require 'vendor/autoload.php';
-use Oxemis\OxiBounce\ApiClient;
+require_once 'vendor/autoload.php';
+use Oxemis\OxiBounce\OxiBounceClient;
 use Oxemis\OxiBounce\Objects\EmailCheck;
 use Oxemis\OxiBounce\Objects\EmailCheckResult;  
 
 // Create the Client
 $apilogin = 'your API login';
 $apipwd = 'your API password';
-$client = new ApiClient($apilogin, $apipwd);
+$client = new OxiBounceClient($apilogin, $apipwd);
 
 // Run the check
 // You can specify multiple addresses separated with a ";" (up to 50)

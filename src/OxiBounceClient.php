@@ -8,7 +8,7 @@ use Oxemis\OxiBounce\Components\UserAPI;
 /**
  * API Client for OxiBounce.
  */
-class ApiClient
+class OxiBounceClient
 {
 
     private string $auth;

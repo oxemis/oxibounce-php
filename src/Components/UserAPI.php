@@ -2,8 +2,8 @@
 
 namespace Oxemis\OxiBounce\Components;
 
-use Oxemis\OxiBounce\ApiClient;
-use Oxemis\OxiBounce\ApiException;
+use Oxemis\OxiBounce\OxiBounceClient;
+use Oxemis\OxiBounce\OxiBounceException;
 use Oxemis\OxiBounce\Objects\User;
 
 /**
@@ -12,7 +12,7 @@ use Oxemis\OxiBounce\Objects\User;
 class UserAPI extends Component
 {
 
-    public function __construct(ApiClient $apiClient)
+    public function __construct(OxiBounceClient $apiClient)
     {
         parent::__construct($apiClient);
     }
@@ -21,7 +21,7 @@ class UserAPI extends Component
      * Get informations about your account.
      *
      * @return User             Current user information (see https://api.oxibounce.com/doc/#/user).
-     * @throws ApiException
+     * @throws OxiBounceException
      */
     public function getUser(): User
     {
