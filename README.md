@@ -249,6 +249,59 @@ Each one is documented as PHPDoc if you need to get a description in your IDE.
 | **MailSystem**    | Contains, if identified, the email system used by the owner of the email address.                                                                                                                                                                                                                                  |
 | **Suggestion**    | In case of an invalid address, OxiBounce will be able to suggest a correction (gmial.com at the link of gmail.com for example). **To be used with caution and manual validation of course**.                                                                                                                       |                                                                                                                       |
 
+## Managing lists
+In addition to the simple checks, you also have the ability to add a list of emails, start / stop the analysis of this list, get the results for the whole list and delete the list.
+
+Here's a simple sample to upload a JSON list to OxiBounce :
+
+```php
+require_once 'vendor/autoload.php';
+use Oxemis\OxiBounce\OxiBounceClient;
+use Oxemis\OxiBounce\Objects\EmailList;  
+
+// Create the Client
+$apilogin = 'your API login';
+$apipwd = 'your API password';
+$client = new OxiBounceClient($apilogin, $apipwd);
+
+// Upload a JSON file as a list
+$list = $client->listAPI->addList("./test.json");
+
+// Store the list ID to interact with
+echo 'List uploaded as #' . $list->getId();
+```
+
+Once uploaded, you'll get an EmailList Object with and `Id` that you can use to start (or stop with stopList) the list :
+
+```php
+// Start the list analysis
+$client->listAPI->startList($list->getId());
+```
+
+You can follow the processing of the list by refreshing the list object :
+
+```php
+// Get refreshed information about the list 
+$list = $client->listAPI->getList($list->getId());
+echo "List is : " . $list->getStatus(); // PENDING, DONE, CANCELED
+```
+
+And then get the results (when DONE or CANCELED) :
+
+```php
+// Get results for list
+$result = $client->listAPI->getListResults($list->getId());
+foreach ($result as $emailCheckResult) {
+    echo $emailCheckResult->getEmail() . " : " . $emailCheckResult->getResult() . "\n";
+}
+```
+
+You also have the ability to completly remove a list from our servers :
+
+```php
+// Delete the list
+$client->listAPI->deleteList($list->getId());
+```
 
 ## Contribute / Need help ?
 

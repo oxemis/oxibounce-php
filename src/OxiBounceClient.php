@@ -2,8 +2,9 @@
 
 namespace Oxemis\OxiBounce;
 
-use Oxemis\OxiBounce\Components\CheckAPI;
+use Oxemis\OxiBounce\Components\ListAPI;
 use Oxemis\OxiBounce\Components\UserAPI;
+use Oxemis\OxiBounce\Components\CheckAPI;
 
 /**
  * API Client for OxiBounce.
@@ -14,6 +15,9 @@ class OxiBounceClient
     private string $auth;
     private string $baseURL;
     private string $userAgent;
+    public UserAPI $userAPI;
+    public CheckAPI $checkAPI;
+    public ListAPI $listAPI;
 
     public function __construct(string $apiLogin, string $apiPassword)
     {
@@ -23,6 +27,7 @@ class OxiBounceClient
         $this->baseURL = Configuration::MAIN_URL;
         $this->userAPI = new UserAPI($this);
         $this->checkAPI = new CheckAPI($this);
+        $this->listAPI = new ListAPI($this);
 
     }
 
