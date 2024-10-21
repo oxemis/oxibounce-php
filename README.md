@@ -35,7 +35,7 @@ This library requires **PHP v7.4** or higher.
 
 Use the below code to install the wrapper:
 
-`composer require oxemis/oxibounce-php`
+`composer require oxemis/oxibounce`
 
 ## Authentication
 
